@@ -59,8 +59,8 @@ end function
 ' filterFn: "" (any), "live", "vod", "anime"
 function rec_matches(it as object, filterFn as string) as boolean
     if filterFn = "" then return true
-    if filterFn = "live" then return it.type = "live"
-    if filterFn = "vod" then return it.type <> "live"
+    if filterFn = "live" then return it.type = "live" or it.type = "radio" or it.type = "webcam"
+    if filterFn = "vod" then return it.type = "movie" or it.type = "series"
     if filterFn = "anime"
         for each g in it.genres
             if g = "anime" or g = "animation" then return true
@@ -86,7 +86,7 @@ function rec_recommend(h as object, items as object, limit as integer, filterFn 
     for each id in items
         it = items[id]
         e = h.items[id]
-        finished = (e <> invalid and it.type <> "live" and hist_completion(e) >= 0.92)
+        finished = (e <> invalid and (it.type = "movie" or it.type = "series") and hist_completion(e) >= 0.92)
         if not finished and rec_matches(it, filterFn)
             gs = it.genres
             cosv = 0.0

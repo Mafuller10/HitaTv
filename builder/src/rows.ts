@@ -24,7 +24,9 @@ function roundRobin(lists: Item[][], limit: number): Item[] {
 export function buildRows(items: Item[]): Row[] {
   const has = (i: Item, g: string) => i.genres.includes(g);
   const live = items.filter((i) => i.type === "live");
-  const vod = items.filter((i) => i.type !== "live");
+  const radio = items.filter((i) => i.type === "radio");
+  const cams = items.filter((i) => i.type === "webcam");
+  const vod = items.filter((i) => i.type === "movie" || i.type === "series");
   const bySource = (s: Item["source"]) => vod.filter((i) => i.source === s);
   const archive = bySource("archive");
   const fawesome = bySource("fawesome");
@@ -34,7 +36,11 @@ export function buildRows(items: Item[]): Row[] {
   const rows: (Row | null)[] = [];
 
   // Trending: popularity-ranked, interleaved across all sources.
-  const trending = roundRobin([fawesome, archive, retro, live.filter((l) => pref.has(l.country ?? ""))], PER_ROW);
+  const famelackLive = live.filter((l) => l.source === "famelack");
+  const trending = roundRobin(
+    [fawesome, archive, retro, live.filter((l) => l.source === "iptv" && pref.has(l.country ?? "")), famelackLive],
+    PER_ROW,
+  );
   rows.push({ id: "trending", title: "Trending Now", views: ["home"], itemIds: trending.map((i) => i.id) });
 
   // Live TV
@@ -60,6 +66,30 @@ export function buildRows(items: Item[]): Row[] {
   for (const [cc, name] of Object.entries(countryNames))
     rows.push(row(`live-${cc}`, `Live from ${name}`, ["live"], live.filter((l) => l.country === cc)));
   rows.push(row("live-world", "Live from Around the World", ["live"], live.filter((l) => !pref.has(l.country ?? ""))));
+
+  // Famelack: its own TV row, webcams and radio.
+  rows.push(row("famelack-tv", "Famelack Live TV", ["home", "live"], famelackLive));
+  rows.push(row("webcams", "Live Webcams", ["home", "live"], cams));
+  const camRows: [string, string, string[]][] = [
+    ["webcams-nature", "Webcams: Nature & Animals", ["nature", "animals", "mountain", "volcano", "lake", "river"]],
+    ["webcams-water", "Webcams: Beaches, Harbors & Underwater", ["beach", "harbor", "underwater"]],
+    ["webcams-city", "Webcams: Cities & Landmarks", ["city", "landmark"]],
+    ["webcams-transport", "Webcams: Airports, Trains & Space", ["airport", "train", "space"]],
+  ];
+  for (const [id, title, gs] of camRows) rows.push(row(id, title, ["live"], cams.filter((c) => gs.some((g) => has(c, g)))));
+  rows.push(row("radio", "Famelack Radio", ["home", "live"], radio));
+  const radioRows: [string, string, string[]][] = [
+    ["radio-hits", "Radio: Hits & Pop", ["hits", "pop"]],
+    ["radio-rock", "Radio: Rock", ["rock"]],
+    ["radio-hiphop", "Radio: Hip-Hop, Soul & R&B", ["hip-hop", "soul"]],
+    ["radio-country", "Radio: Country", ["country"]],
+    ["radio-decades", "Radio: Oldies & Decades", ["oldies", "70s", "80s", "90s"]],
+    ["radio-jazz", "Radio: Jazz, Blues & Classical", ["jazz", "blues", "classical"]],
+    ["radio-chill", "Radio: Chill & Electronic", ["chill", "electronic"]],
+    ["radio-latin", "Radio: Latin & Reggae", ["latin", "reggae"]],
+    ["radio-talk", "Radio: News & Talk", ["news"]],
+  ];
+  for (const [id, title, gs] of radioRows) rows.push(row(id, title, ["live"], radio.filter((r) => gs.some((g) => has(r, g)))));
 
   // Anime
   rows.push(row("anime-retro", "Classic Anime on RetroCrush", ["home", "anime"], retro));

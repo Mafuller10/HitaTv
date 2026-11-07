@@ -6,9 +6,34 @@ export const config = {
     api: "https://iptv-org.github.io/api",
     // Channels from these countries are preferred; others only fill category rows if space remains.
     preferredCountries: ["US", "GB", "CA", "AU", "IE", "NZ"],
-    maxChannels: 600, // after health check
-    maxCandidates: 1500, // streams probed
+    maxChannels: 450, // after health check
+    maxCandidates: 1100, // streams probed
     perRow: 40,
+  },
+
+  famelack: {
+    // Famelack's own MIT-licensed public dataset: https://github.com/famelack/famelack-data
+    raw: "https://raw.githubusercontent.com/famelack/famelack-data/main",
+    countries: ["us", "gb", "ca", "au"],
+    tvCategories: [
+      "news", "top-news", "sports", "movies", "series", "kids", "animation", "family", "music", "comedy",
+      "entertainment", "documentary", "science", "classic", "lifestyle", "cooking", "travel", "outdoor",
+      "religious", "weather", "general", "show", "relax",
+    ],
+    radioCategories: [
+      "hits", "pop", "rock", "hip-hop", "country", "jazz", "classical", "oldies", "70s", "80s", "90s",
+      "soul", "blues", "electronic", "chill", "latin", "reggae", "news", "talk", "sports", "christmas",
+    ],
+    webcamCategories: [
+      "beach", "city", "nature", "animals", "landmark", "mountain", "harbor", "airport", "train",
+      "space", "underwater", "ski", "lake", "river", "volcano", "weather",
+    ],
+    maxTv: 300, // new channels after removing iptv-org duplicates and health check
+    maxTvCandidates: 700,
+    maxRadio: 200,
+    maxRadioCandidates: 450,
+    maxWebcams: 150,
+    youtubeAppName: "YouTube",
   },
 
   archive: {

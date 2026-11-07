@@ -29,8 +29,14 @@ sub onContent()
     m.title.text = c.title
 
     parts = []
-    if c.source = "iptv"
-        parts.Push("LIVE CHANNEL")
+    if isLiveType(c.itemType)
+        if c.itemType = "radio"
+            parts.Push("LIVE RADIO")
+        else if c.itemType = "webcam"
+            parts.Push("LIVE WEBCAM")
+        else
+            parts.Push("LIVE CHANNEL")
+        end if
         if c.country <> "" then parts.Push(c.country)
     else
         if c.year > 0 then parts.Push(c.year.ToStr())
@@ -47,6 +53,10 @@ sub onContent()
         m.note.text = "Public-domain film from the Internet Archive (archive.org)."
     else if c.source = "iptv"
         m.note.text = "Free public stream listed by the iptv-org community project. Some channels go offline without notice."
+    else if c.source = "famelack" and c.itemType = "webcam"
+        m.note.text = "Webcam listed on Famelack. It streams on YouTube, so HitaTV opens the YouTube channel for you."
+    else if c.source = "famelack"
+        m.note.text = "Free public stream listed on Famelack (famelack.com). Some streams go offline without notice."
     else if c.playable = false
         m.note.text = "Streams in the official " + c.extApp + " app (free, ad-supported). HitaTV opens it for you."
     end if
@@ -74,7 +84,10 @@ sub updateButtons()
             m.actions.Push({ type: "play", startAt: resumeAt })
             labels.Push("Start Over")
             m.actions.Push({ type: "play", startAt: 0 })
-        else if c.source = "iptv"
+        else if c.itemType = "radio"
+            labels.Push("Listen Live")
+            m.actions.Push({ type: "play", startAt: 0 })
+        else if c.itemType = "live"
             labels.Push("Watch Live")
             m.actions.Push({ type: "play", startAt: 0 })
         else

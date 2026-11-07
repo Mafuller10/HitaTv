@@ -36,3 +36,32 @@ export async function probeStream(url: string, headers: string[] = [], timeoutMs
     ctrl.abort();
   }
 }
+
+/**
+ * Probes an internet-radio stream and returns the Roku Audio streamFormat it needs, or null if dead.
+ * Icecast/Shoutcast streams never end, so we only read the response headers (and a few bytes for HLS).
+ */
+export async function probeAudio(url: string, timeoutMs = 8000): Promise<"mp3" | "aac" | "hls" | null> {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { headers: { "User-Agent": config.userAgent }, signal: ctrl.signal, redirect: "follow" });
+    if (!res.ok) return null;
+    const ct = (res.headers.get("content-type") ?? "").toLowerCase();
+    if (ct.includes("mpegurl")) {
+      const reader = res.body?.getReader();
+      const chunk = reader ? await reader.read() : undefined;
+      reader?.cancel().catch(() => {});
+      const text = chunk?.value ? new TextDecoder().decode(chunk.value) : "";
+      return text.trimStart().startsWith("#EXTM3U") ? "hls" : null;
+    }
+    if (ct.startsWith("audio/mpeg") || ct.startsWith("audio/mp3")) return "mp3";
+    if (ct.startsWith("audio/aac") || ct.startsWith("audio/aacp") || ct.startsWith("audio/x-aac") || ct.startsWith("audio/mp4")) return "aac";
+    return null; // playlists (.pls/.m3u), ogg, html error pages, etc.
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+    ctrl.abort();
+  }
+}

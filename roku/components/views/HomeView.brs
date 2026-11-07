@@ -85,12 +85,16 @@ sub showHero(item as object)
     img = item.backdrop
     if img = invalid or img = "" then img = item.hdPosterUrl
     m.heroImage.loadDisplayMode = "scaleToZoom"
-    if item.source = "iptv" then m.heroImage.loadDisplayMode = "scaleToFit"
+    if item.itemType = "live" or item.itemType = "radio" then m.heroImage.loadDisplayMode = "scaleToFit"
     m.heroImage.uri = img
     m.heroTitle.text = item.title
 
     parts = []
-    if item.source = "iptv"
+    if item.itemType = "radio"
+        parts.Push("LIVE RADIO")
+    else if item.itemType = "webcam"
+        parts.Push("LIVE WEBCAM")
+    else if item.itemType = "live"
         parts.Push("LIVE")
     else
         if item.year > 0 then parts.Push(item.year.ToStr())
@@ -98,7 +102,7 @@ sub showHero(item as object)
         if item.rating <> "" then parts.Push(item.rating)
     end if
     if item.genresText <> "" then parts.Push(item.genresText)
-    if item.source = "fawesome" or item.source = "retrocrush" then parts.Push("on " + item.extApp)
+    if item.extApp <> "" then parts.Push("on " + item.extApp)
     m.heroMeta.text = joinArr(parts, "  •  ")
     m.heroDesc.text = item.description
 end sub

@@ -21,14 +21,18 @@ sub onContent()
     m.title.text = c.title
 
     src = ""
+    itype = ""
     if c.hasField("source") then src = c.source
-    m.badge.text = sourceLabel(src)
-    if src = "iptv"
+    if c.hasField("itemType") then itype = c.itemType
+    m.badge.text = badgeLabel(src, itype)
+    if isLiveType(itype)
         m.badgeBg.color = "0xFF4D2EFF"
-        m.badgeBg.width = 80
-        m.badge.width = 80
-        ' Channel logos look best letterboxed on a lighter card.
+        m.badgeBg.width = 140
+        m.badge.width = 140
+        ' Channel logos look best letterboxed on a lighter card; radio gets its own tint.
         m.bg.color = "0x2A2A34FF"
+        if itype = "radio" then m.bg.color = "0x123B3AFF"
+        if src = "famelack" and itype = "live" then m.bg.color = "0x2B2440FF"
     else
         m.badgeBg.color = "0x000000B0"
         m.badgeBg.width = 140

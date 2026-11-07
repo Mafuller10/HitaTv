@@ -7,6 +7,7 @@ import path from "node:path";
 import { buildRows } from "./rows.js";
 import { computeSimilar } from "./similar.js";
 import { fetchArchive } from "./sources/archiveOrg.js";
+import { fetchFamelack } from "./sources/famelack.js";
 import { fetchFawesome } from "./sources/fawesome.js";
 import { fetchIptv } from "./sources/iptvOrg.js";
 import { fetchRetrocrush } from "./sources/retrocrush.js";
@@ -33,7 +34,17 @@ async function main() {
     previous = JSON.parse(fs.readFileSync(path.join(dist, "catalog.json"), "utf8"));
   } catch {}
 
-  const results = await Promise.allSettled(sources.map(([, fn]) => fn(quick)));
+  // Famelack runs after iptv-org so it can skip channels iptv-org already supplied.
+  sources.push(["famelack", async (q) => fetchFamelack(q, await iptvDone)]);
+  let resolveIptv!: (v: Item[]) => void;
+  const iptvDone = new Promise<Item[]>((r) => (resolveIptv = r));
+  const results = await Promise.allSettled(
+    sources.map(([name, fn]) => {
+      const p = fn(quick);
+      if (name === "iptv") p.then(resolveIptv, () => resolveIptv([]));
+      return p;
+    }),
+  );
   const all: Item[] = [];
   results.forEach((r, i) => {
     const name = sources[i][0];

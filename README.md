@@ -1,15 +1,16 @@
 # HitaTV
 
-A Roku channel with a streaming-style browse UI (top nav, hero preview, rows of tiles), category rows, search and on-device recommendations. Content comes from four free sources:
+A Roku channel with a streaming-style browse UI (top nav, hero preview, rows of tiles), category rows, search and on-device recommendations. Content comes from these free sources:
 
 | Source | What it gives | Playback |
 |---|---|---|
-| **iptv-org** (the open database behind Famelack) | ~600 free live TV channels, health-checked daily | In HitaTV |
+| **iptv-org** | ~450 free live TV channels, health-checked daily | In HitaTV |
+| **Famelack** ([famelack-data](https://github.com/famelack/famelack-data), MIT) | Extra live TV channels (iptv-org duplicates removed), ~200 internet radio stations, ~150 live webcams | TV and radio in HitaTV; webcams open in the YouTube channel |
 | **Internet Archive** | Public-domain feature films, cartoons, classic TV, noir, silent films | In HitaTV |
 | **Fawesome** | Movie and series titles, posters, genres (from its public sitemap and title pages) | Opens the official Fawesome channel |
 | **RetroCrush** | Classic anime titles (from its public sitemap) | Opens the official RetroCrush channel |
 
-Fawesome and RetroCrush are licensed, ad-supported services, so HitaTV only lists their titles and hands playback to their own apps. It never pulls their video streams. The builder sends a plain identifying User-Agent, respects each site's robots.txt and rate-limits its requests.
+Fawesome and RetroCrush are licensed, ad-supported services, so HitaTV only lists their titles and hands playback to their own apps. It never pulls their video streams. Sites that stream movies without a license (such as 456movies) are deliberately not included; the Internet Archive rows cover free full-length movies legally. The builder sends a plain identifying User-Agent, respects each site's robots.txt and rate-limits its requests.
 
 ## How it fits together
 

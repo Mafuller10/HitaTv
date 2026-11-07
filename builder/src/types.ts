@@ -1,12 +1,13 @@
 import { z } from "zod";
 
-export const SourceId = z.enum(["iptv", "archive", "fawesome", "retrocrush"]);
+export const SourceId = z.enum(["iptv", "famelack", "archive", "fawesome", "retrocrush"]);
 export type SourceId = z.infer<typeof SourceId>;
 
 export const ItemSchema = z.object({
   id: z.string().min(1),
   source: SourceId,
-  type: z.enum(["live", "movie", "series"]),
+  // "webcam" = live camera opened in the YouTube channel; "radio" = audio-only live stream.
+  type: z.enum(["live", "radio", "webcam", "movie", "series"]),
   title: z.string().min(1),
   description: z.string(),
   poster: z.string(), // may be "" (Roku tile falls back to a text card)
@@ -23,7 +24,7 @@ export const ItemSchema = z.object({
     .array(
       z.object({
         url: z.string().url(),
-        format: z.enum(["hls", "mp4"]),
+        format: z.enum(["hls", "mp4", "mp3", "aac"]),
         headers: z.array(z.string()).optional(), // "Name: value" (Roku HttpHeaders format)
       }),
     )
@@ -33,7 +34,7 @@ export const ItemSchema = z.object({
     .object({
       appName: z.string(), // matched against Roku /query/apps
       contentId: z.string(),
-      mediaType: z.enum(["movie", "series"]),
+      mediaType: z.enum(["movie", "series", "live"]),
       webUrl: z.string().url(),
     })
     .optional(),

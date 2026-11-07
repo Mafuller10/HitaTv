@@ -62,6 +62,19 @@ function fmtClock(sec as integer) as string
     return mm + ":" + ss
 end function
 
+' Badge text for a tile: type wins for radio/webcams, otherwise the source.
+function badgeLabel(src as string, itemType as string) as string
+    if itemType = "radio" then return "RADIO"
+    if itemType = "webcam" then return "WEBCAM"
+    if itemType = "live" and src = "famelack" then return "FAMELACK"
+    if itemType = "live" then return "LIVE"
+    return sourceLabel(src)
+end function
+
+function isLiveType(itemType as string) as boolean
+    return itemType = "live" or itemType = "radio" or itemType = "webcam"
+end function
+
 function capitalize(t as string) as string
     if Len(t) = 0 then return t
     return UCase(Left(t, 1)) + Mid(t, 2)
@@ -69,6 +82,7 @@ end function
 
 function sourceLabel(src as string) as string
     if src = "iptv" then return "LIVE"
+    if src = "famelack" then return "FAMELACK"
     if src = "archive" then return "ARCHIVE"
     if src = "fawesome" then return "FAWESOME"
     if src = "retrocrush" then return "RETROCRUSH"

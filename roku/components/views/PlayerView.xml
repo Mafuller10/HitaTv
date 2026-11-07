@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Full-screen playback for in-app sources (iptv-org live HLS, Internet Archive MP4).
+<!-- Full-screen playback for in-app sources: live HLS TV (iptv-org, Famelack), Internet Archive MP4,
+     and Famelack internet radio (Audio node with a "now playing" screen).
      Saves progress to History, resumes, and falls back to the next stream URL on error. -->
 <component name="PlayerView" extends="Group">
   <interface>
@@ -14,6 +15,19 @@
   <children>
     <Rectangle width="1920" height="1080" color="0x000000FF" />
     <Video id="video" width="1920" height="1080" enableUI="true" />
+    <Audio id="audio" />
+
+    <Group id="radioPanel" visible="false">
+      <Rectangle width="1920" height="1080" color="0x0B1A1AFF" />
+      <Rectangle translation="[160,300]" width="420" height="420" color="0x123B3AFF">
+        <Label width="420" height="420" horizAlign="center" vertAlign="center" text="RADIO" color="0xFF4D2EFF" font="font:LargeBoldSystemFont" />
+      </Rectangle>
+      <Label id="radioState" translation="[660,320]" text="LIVE RADIO" color="0xFF4D2EFF" font="font:SmallBoldSystemFont" />
+      <Label id="radioTitle" translation="[660,370]" width="1100" wrap="true" maxLines="2" color="0xFFFFFFFF" font="font:LargeBoldSystemFont" />
+      <Label id="radioDesc" translation="[660,500]" width="1100" wrap="true" maxLines="3" color="0xB3B3B3FF" font="font:SmallSystemFont" />
+      <Label translation="[660,660]" width="1100" text="OK to pause or resume  •  Back to stop" color="0x8C8C8CFF" font="font:SmallestSystemFont" />
+    </Group>
+
     <Label id="error" width="1920" height="1080" horizAlign="center" vertAlign="center" wrap="true"
            color="0xFFFFFFFF" font="font:MediumSystemFont" visible="false" />
     <Timer id="saveTimer" repeat="true" duration="10" />
