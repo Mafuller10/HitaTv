@@ -43,8 +43,10 @@ function loadCatalog() as object
         end if
         print "[CatalogTask] remote catalog unavailable, falling back"
     end if
+    fs = CreateObject("roFileSystem")
     for each path in [cachePath, "pkg:/data/catalog.json"]
-        body = ReadAsciiFile(path)
+        body = invalid
+        if fs.Exists(path) then body = ReadAsciiFile(path)
         if body <> invalid and Len(body) > 100
             c = ParseJson(body)
             if isValidCatalog(c) then return c

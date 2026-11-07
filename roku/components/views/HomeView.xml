@@ -13,7 +13,7 @@
   <script type="text/brightscript" uri="HomeView.brs" />
   <children>
     <!-- Hero -->
-    <Poster id="heroImage" translation="[700,0]" width="1220" height="690" loadDisplayMode="scaleToZoom" opacity="0.55" />
+    <Poster id="heroImage" translation="[700,0]" width="1220" height="690" loadWidth="1220" loadHeight="690" loadDisplayMode="scaleToZoom" opacity="0.55" />
     <Rectangle translation="[0,0]" width="760" height="690" color="0x0B0B0FFF" />
     <Rectangle translation="[700,0]" width="120" height="690" color="0x0B0B0FC0" />
     <Rectangle translation="[820,0]" width="120" height="690" color="0x0B0B0F70" />

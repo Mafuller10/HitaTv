@@ -13,13 +13,13 @@
   <script type="text/brightscript" uri="DetailsView.brs" />
   <children>
     <Rectangle width="1920" height="1080" color="0x0B0B0FFF" />
-    <Poster id="backdrop" width="1920" height="1080" loadDisplayMode="scaleToZoom" opacity="0.25" />
+    <Poster id="backdrop" width="1920" height="1080" loadWidth="960" loadHeight="540" loadDisplayMode="scaleToZoom" opacity="0.25" />
     <Rectangle width="1920" height="1080" color="0x0B0B0F80" />
 
     <Rectangle id="artBg" translation="[80,120]" width="560" height="315" color="0x1C1C24FF">
       <Label id="artTitle" translation="[24,0]" width="512" height="315" horizAlign="center" vertAlign="center"
              wrap="true" maxLines="3" color="0xFFFFFFFF" font="font:LargeBoldSystemFont" />
-      <Poster id="art" width="560" height="315" loadDisplayMode="scaleToFit" />
+      <Poster id="art" width="560" height="315" loadWidth="560" loadHeight="315" loadDisplayMode="scaleToFit" />
     </Rectangle>
 
     <Label id="title" translation="[700,110]" width="1140" wrap="true" maxLines="2" color="0xFFFFFFFF" font="font:LargeBoldSystemFont" />
