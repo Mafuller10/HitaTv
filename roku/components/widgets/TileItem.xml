@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 400x225 landscape tile used by every RowList / MarkupGrid. Shows poster, title bar, source badge
+     and a progress bar; falls back to a text card when there is no artwork (e.g. RetroCrush). -->
+<component name="TileItem" extends="Group">
+  <interface>
+    <field id="itemContent" type="node" onChange="onContent" />
+    <field id="width" type="float" onChange="onSize" />
+    <field id="height" type="float" onChange="onSize" />
+    <field id="focusPercent" type="float" />
+    <field id="rowFocusPercent" type="float" />
+    <field id="itemHasFocus" type="boolean" />
+  </interface>
+  <script type="text/brightscript" uri="pkg:/components/lib/Utils.brs" />
+  <script type="text/brightscript" uri="TileItem.brs" />
+  <children>
+    <Rectangle id="bg" width="400" height="225" color="0x1C1C24FF" />
+    <Label id="cardTitle" width="360" height="225" translation="[20,0]" horizAlign="center" vertAlign="center"
+           wrap="true" maxLines="3" color="0xFFFFFFFF" font="font:MediumBoldSystemFont" />
+    <Poster id="poster" width="400" height="225" loadDisplayMode="scaleToFit" loadWidth="400" loadHeight="225" />
+    <Rectangle id="titleBar" width="400" height="48" translation="[0,177]" color="0x000000C0">
+      <Label id="title" width="372" height="48" translation="[14,0]" vertAlign="center" color="0xFFFFFFFF"
+             font="font:SmallestSystemFont" />
+    </Rectangle>
+    <Rectangle id="badgeBg" height="30" width="140" translation="[10,10]" color="0x000000B0">
+      <Label id="badge" height="30" width="140" horizAlign="center" vertAlign="center" color="0xFFFFFFFF"
+             font="font:SmallestBoldSystemFont" />
+    </Rectangle>
+    <Rectangle id="progressBg" width="400" height="6" translation="[0,219]" color="0x555555FF" visible="false">
+      <Rectangle id="progress" width="0" height="6" color="0xFF4D2EFF" />
+    </Rectangle>
+  </children>
+</component>

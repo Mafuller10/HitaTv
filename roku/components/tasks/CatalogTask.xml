@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Long-running background task that owns the catalog. Views send it requests and read results:
+       request = { reqId, cmd: "view", view: "home"|"live"|"movies"|"anime" }
+       request = { reqId, cmd: "similar", id }
+       request = { reqId, cmd: "search", q }
+     result  = { reqId, cmd, content: ContentNode (rows -> items) } -->
+<component name="CatalogTask" extends="Task">
+  <interface>
+    <field id="request" type="assocarray" />
+    <field id="result" type="assocarray" alwaysNotify="true" />
+    <field id="status" type="string" value="loading" />
+    <field id="statusMessage" type="string" />
+  </interface>
+  <script type="text/brightscript" uri="pkg:/components/lib/Utils.brs" />
+  <script type="text/brightscript" uri="pkg:/components/lib/History.brs" />
+  <script type="text/brightscript" uri="pkg:/components/lib/Recommender.brs" />
+  <script type="text/brightscript" uri="CatalogTask.brs" />
+</component>

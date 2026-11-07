@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Main browse screen: top nav, hero preview of the focused title, and rows of tiles.
+     One instance serves Home / Live TV / Movies & Shows / Anime by switching `view`. -->
+<component name="HomeView" extends="Group">
+  <interface>
+    <field id="catalogTask" type="node" />
+    <field id="view" type="string" onChange="loadView" />
+    <field id="refresh" type="boolean" alwaysNotify="true" onChange="onRefresh" />
+    <field id="itemSelected" type="node" alwaysNotify="true" />
+    <field id="navAction" type="string" alwaysNotify="true" />
+  </interface>
+  <script type="text/brightscript" uri="pkg:/components/lib/Utils.brs" />
+  <script type="text/brightscript" uri="HomeView.brs" />
+  <children>
+    <!-- Hero -->
+    <Poster id="heroImage" translation="[700,0]" width="1220" height="690" loadDisplayMode="scaleToZoom" opacity="0.55" />
+    <Rectangle translation="[0,0]" width="760" height="690" color="0x0B0B0FFF" />
+    <Rectangle translation="[700,0]" width="120" height="690" color="0x0B0B0FC0" />
+    <Rectangle translation="[820,0]" width="120" height="690" color="0x0B0B0F70" />
+    <Rectangle translation="[0,560]" width="1920" height="130" color="0x0B0B0F90" />
+
+    <Label id="logo" translation="[80,48]" text="HITA TV" color="0xFF4D2EFF" font="font:LargeBoldSystemFont" />
+    <LayoutGroup id="nav" translation="[420,58]" layoutDirection="horiz" itemSpacings="[56]">
+      <Label id="nav0" text="Home" font="font:MediumSystemFont" />
+      <Label id="nav1" text="Live TV" font="font:MediumSystemFont" />
+      <Label id="nav2" text="Movies &amp; Shows" font="font:MediumSystemFont" />
+      <Label id="nav3" text="Anime" font="font:MediumSystemFont" />
+      <Label id="nav4" text="Search" font="font:MediumSystemFont" />
+    </LayoutGroup>
+    <Rectangle id="navUnderline" translation="[420,104]" width="80" height="4" color="0xFF4D2EFF" />
+
+    <Label id="heroTitle" translation="[80,190]" width="900" wrap="true" maxLines="2" color="0xFFFFFFFF" font="font:LargeBoldSystemFont" />
+    <Label id="heroMeta" translation="[80,300]" width="900" color="0xB3B3B3FF" font="font:SmallSystemFont" />
+    <Label id="heroDesc" translation="[80,350]" width="820" height="170" wrap="true" maxLines="4" color="0xE0E0E0FF" font="font:SmallSystemFont" />
+
+    <RowList id="rows" translation="[80,600]" itemComponentName="TileItem"
+             itemSize="[1840,320]" rowItemSize="[[400,225]]" rowItemSpacing="[[24,0]]" itemSpacing="[0,24]"
+             numRows="2" showRowLabel="[true]" rowLabelOffset="[[0,14]]" rowLabelColor="0xFFFFFFFF"
+             rowLabelFont="font:SmallBoldSystemFont" rowFocusAnimationStyle="floatingFocus"
+             focusBitmapBlendColor="0xFF4D2EFF" vertFocusAnimationStyle="fixedFocus" />
+    <Label id="status" translation="[80,700]" width="1760" horizAlign="center" color="0xB3B3B3FF" font="font:MediumSystemFont" />
+  </children>
+</component>

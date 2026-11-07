@@ -1,0 +1,53 @@
+name: Build catalog
+
+on:
+  schedule:
+    - cron: "17 6 * * *" # daily
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["builder/**", ".github/workflows/build-catalog.yml"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: builder/package-lock.json
+      # Keep the per-title cache between runs so we re-fetch as little as possible.
+      - uses: actions/cache@v4
+        with:
+          path: builder/.cache
+          key: builder-cache-${{ github.run_id }}
+          restore-keys: builder-cache-
+      - run: npm ci
+        working-directory: builder
+      - run: npm run build
+        working-directory: builder
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: builder/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

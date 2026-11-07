@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Title details: artwork, metadata, actions (Play / Resume / Open in partner app / My List) and "More Like This". -->
+<component name="DetailsView" extends="Group">
+  <interface>
+    <field id="catalogTask" type="node" />
+    <field id="content" type="node" onChange="onContent" />
+    <field id="refresh" type="boolean" alwaysNotify="true" onChange="updateButtons" />
+    <field id="action" type="assocarray" alwaysNotify="true" />
+    <field id="itemSelected" type="node" alwaysNotify="true" />
+  </interface>
+  <script type="text/brightscript" uri="pkg:/components/lib/Utils.brs" />
+  <script type="text/brightscript" uri="pkg:/components/lib/History.brs" />
+  <script type="text/brightscript" uri="DetailsView.brs" />
+  <children>
+    <Rectangle width="1920" height="1080" color="0x0B0B0FFF" />
+    <Poster id="backdrop" width="1920" height="1080" loadDisplayMode="scaleToZoom" opacity="0.25" />
+    <Rectangle width="1920" height="1080" color="0x0B0B0F80" />
+
+    <Rectangle id="artBg" translation="[80,120]" width="560" height="315" color="0x1C1C24FF">
+      <Label id="artTitle" translation="[24,0]" width="512" height="315" horizAlign="center" vertAlign="center"
+             wrap="true" maxLines="3" color="0xFFFFFFFF" font="font:LargeBoldSystemFont" />
+      <Poster id="art" width="560" height="315" loadDisplayMode="scaleToFit" />
+    </Rectangle>
+
+    <Label id="title" translation="[700,110]" width="1140" wrap="true" maxLines="2" color="0xFFFFFFFF" font="font:LargeBoldSystemFont" />
+    <Label id="meta" translation="[700,215]" width="1140" color="0xB3B3B3FF" font="font:SmallSystemFont" />
+    <Label id="genres" translation="[700,260]" width="1140" color="0xFF8A70FF" font="font:SmallSystemFont" />
+    <Label id="desc" translation="[700,310]" width="1100" height="220" wrap="true" maxLines="5" color="0xE0E0E0FF" font="font:SmallSystemFont" />
+    <Label id="note" translation="[80,460]" width="560" wrap="true" maxLines="3" color="0x8C8C8CFF" font="font:SmallestSystemFont" />
+
+    <ButtonGroup id="buttons" translation="[700,550]" minWidth="520" buttonHeight="72"
+                 focusedTextColor="0x0B0B0FFF" textColor="0xFFFFFFFF" />
+
+    <RowList id="similar" translation="[80,800]" itemComponentName="TileItem"
+             itemSize="[1840,280]" rowItemSize="[[400,225]]" rowItemSpacing="[[24,0]]" numRows="1"
+             showRowLabel="[true]" rowLabelOffset="[[0,14]]" rowLabelColor="0xFFFFFFFF"
+             rowLabelFont="font:SmallBoldSystemFont" rowFocusAnimationStyle="floatingFocus"
+             focusBitmapBlendColor="0xFF4D2EFF" />
+  </children>
+</component>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Root scene: owns the CatalogTask and a simple view stack (Home -> Details -> Player / Search). -->
+<component name="MainScene" extends="Scene">
+  <interface>
+    <field id="exitApp" type="boolean" alwaysNotify="true" />
+  </interface>
+  <script type="text/brightscript" uri="pkg:/components/lib/Utils.brs" />
+  <script type="text/brightscript" uri="pkg:/components/lib/History.brs" />
+  <script type="text/brightscript" uri="MainScene.brs" />
+  <children>
+    <Rectangle id="bg" width="1920" height="1080" color="0x0B0B0FFF" />
+    <Group id="stack" />
+    <Group id="loading">
+      <Label id="loadingLabel" width="1920" height="1080" horizAlign="center" vertAlign="center"
+             text="Loading HitaTV…" color="0xB3B3B3FF" font="font:MediumSystemFont" />
+    </Group>
+  </children>
+</component>

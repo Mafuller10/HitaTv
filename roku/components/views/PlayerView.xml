@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Full-screen playback for in-app sources (iptv-org live HLS, Internet Archive MP4).
+     Saves progress to History, resumes, and falls back to the next stream URL on error. -->
+<component name="PlayerView" extends="Group">
+  <interface>
+    <field id="content" type="node" onChange="onContent" />
+    <field id="startAt" type="integer" />
+    <field id="close" type="boolean" alwaysNotify="true" onChange="onClose" />
+    <field id="closed" type="boolean" alwaysNotify="true" />
+  </interface>
+  <script type="text/brightscript" uri="pkg:/components/lib/Utils.brs" />
+  <script type="text/brightscript" uri="pkg:/components/lib/History.brs" />
+  <script type="text/brightscript" uri="PlayerView.brs" />
+  <children>
+    <Rectangle width="1920" height="1080" color="0x000000FF" />
+    <Video id="video" width="1920" height="1080" enableUI="true" />
+    <Label id="error" width="1920" height="1080" horizAlign="center" vertAlign="center" wrap="true"
+           color="0xFFFFFFFF" font="font:MediumSystemFont" visible="false" />
+    <Timer id="saveTimer" repeat="true" duration="10" />
+  </children>
+</component>

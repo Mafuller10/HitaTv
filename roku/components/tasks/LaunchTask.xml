@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Opens an official partner channel (Fawesome, RetroCrush) via the device's local ECP endpoint.
+     Finds the installed channel by name from /query/apps, then POSTs /launch/{id}.
+     result: "ok" | "notInstalled" | "failed" -->
+<component name="LaunchTask" extends="Task">
+  <interface>
+    <field id="appName" type="string" />
+    <field id="contentId" type="string" />
+    <field id="mediaType" type="string" />
+    <field id="result" type="string" />
+  </interface>
+  <script type="text/brightscript" uri="LaunchTask.brs" />
+</component>
